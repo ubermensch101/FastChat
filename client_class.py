@@ -174,7 +174,7 @@ class MAIN():
                 self.__SENDER_QUEUE.append(prepare_send_data)
 
 
-    def SEND_TO_CLIENT(self,target_name : str = None, data = None):
+    def SEND_TO_DATABASE(self,target_name : str = None, data = None):
         if not target_name:
             raise TypeError("SEND() missing 1 required positional argument: 'target_name'")
         if not data:
@@ -210,5 +210,6 @@ class client():
         self.LISTEN = __parent.LISTEN
         self.CREATE_CHANNEL = __parent.CREATE_CHANNEL
         self.SEND = __parent.SEND
-        self.SEND_TO_CLIENT = __parent.SEND_TO_CLIENT
+        self.SEND_TO_DATABASE = __parent.SEND_TO_DATABASE
         self.CLOSE = __parent.CLOSE
+

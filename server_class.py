@@ -4,6 +4,8 @@ import base64
 import pickle
 import threading
 import time
+import json
+from DATABASE import User_Table, Group_Table, Undelivered_Messages_Table
 
 class MAIN():
 
@@ -226,6 +228,46 @@ class MAIN():
     def __handler(self,__receivingMsg, __bypassMsg,__customChannel,__messageHandler):
         while True:
             for i, _data_ in enumerate(__receivingMsg):
+                
+                channel=_data_["channel"]
+                message_data_json=_data_["data"]
+                message_data=json.loads(message_data_json)
+
+                if message_data["type"]=="Sign Up":
+                    user_ID=message_data["user_ID"]
+                    user_password=message_data["password"]
+                    User_Table.add_user(user_ID, user_password)
+                
+                elif message_data["type"]=="Send Text":
+                    sender_ID=message_data["sender_ID"]
+                    receiver_ID=message_data["receiver_ID"]
+                    text_message=message_data["text_message"]
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Text", text_message, "NULL")
+                
+                elif message_data["type"]=="Check User Exists":
+                    user_ID=message_data["user_ID"]
+                    user_exists=User_Table.check_user_existence(user_ID)
+                    
+                    server_message={
+                        "message_type": "Check User Exists Return",
+                        "user_exists": str(user_exists)
+                    }
+
+                    server_message_json=json.dumps(server_message)
+
+                    prepare_send = {
+                        "channel" : channel,
+                        "sender_name" : "SERVER",
+                        "target_name" : user_ID,
+                        "data" : server_message_json
+                    }
+                    
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
+                    
+                
+
+
+
                 if _data_["channel"] == "DSP_MSG":
                     print("data: " ,_data_)
                     __bypassMsg.append([_data_["target_name"],_data_])
