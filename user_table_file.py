@@ -1,12 +1,12 @@
 import sqlite3
 
-conn=sqlite3.connect("user_data.db")
+conn=sqlite3.connect("user_data.db",check_same_thread=False)
 cursor=conn.cursor()
 
 # For speed, reduce commits and use lock
 
 # 0 - Offline, 1 - Online
-def create_users_table():
+def create_users_table(conn,cursor):
     drop_cmd="DROP TABLE IF EXISTS Users"
     cursor.execute(drop_cmd)
 
@@ -19,7 +19,7 @@ def create_users_table():
     conn.commit()
     return
 
-def check_user_password(user_ID, user_password):
+def check_user_password(user_ID, user_password,cursor):
     check_cmd="SELECT UserID FROM Users WHERE UserID = \""+str(user_ID)
     check_cmd+="\" AND Password = \""+str(user_password)+"\";"
     cursor.execute(check_cmd)
@@ -31,7 +31,7 @@ def check_user_password(user_ID, user_password):
         return False
 
 
-def check_online(user_ID):
+def check_online(user_ID,cursor):
     online_cmd="SELECT Online FROM Users WHERE UserID = \""+str(user_ID)+"\";"
     cursor.execute(online_cmd)
     output_online=cursor.fetchone()[0]
@@ -41,7 +41,7 @@ def check_online(user_ID):
     else:
         return False
 
-def add_user(user_ID, user_password):
+def add_user(user_ID, user_password,conn,cursor):
     add_cmd="INSERT INTO Users (UserID, Password, Online) VALUES (\""
     add_cmd+=str(user_ID)
     add_cmd+="\", \""+str(user_password)
@@ -50,4 +50,15 @@ def add_user(user_ID, user_password):
     conn.commit()
     return
 
+def change_status(user_ID,conn,cursor):
+    cursor.execute("UPDATE Users SET Online = 1 - Online WHERE UserID = \"{}\"".format(user_ID))
+    conn.commit()
+    return
 
+def check_user_existence(user_ID,cursor):
+    cursor.execute("SELECT UserID, Password FROM Users WHERE UserID = \"{}\" ".format(user_ID))
+    output_check=cursor.fetchall()
+    if len(output_check)>0:
+        return True
+    else:
+        return False
