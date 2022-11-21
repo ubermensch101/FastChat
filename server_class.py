@@ -291,6 +291,89 @@ class MAIN():
                     }
 
                     self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
+                   
+                elif message_data["type"]=="Check User Password":
+                    user_ID=message_data["user_ID"]
+                    user_password=message_data["password"]
+                    check_password=User_Table.check_user_password(user_ID,user_password)
+                    
+                    server_message={
+                        "message_type": "Check User Password Return",
+                        "user_exists": str(check_password)
+                    }
+
+                    server_message_json=json.dumps(server_message)
+
+                    prepare_send = {
+                        "channel" : channel,
+                        "sender_name" : "SERVER",
+                        "target_name" : user_ID,
+                        "data" : server_message_json
+                    }
+                    
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
+
+                elif message_data["type"]=="Check Group Exists":
+                    group_ID=message_data["group_ID"]
+                    group_exists=Group_Table.check_group_existence(group_ID)
+                    
+                    server_message={
+                        "message_type": "Check Group Exists Return",
+                        "user_exists": str(group_exists)
+                    }
+
+                    server_message_json=json.dumps(server_message)
+
+                    prepare_send = {
+                        "channel" : channel,
+                        "sender_name" : "SERVER",
+                        "target_name" : user_ID,
+                        "data" : server_message_json
+                    }
+                    
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
+                    
+                elif message_data["type"]=="Check Admin For Group":
+                    group_ID=message_data["group_ID"]
+                    admin_ID=message_data["admin_ID"]
+                    check_admin=Group_Table.check_admin(group_ID,admin_ID)
+                    
+                    server_message={
+                        "message_type": "Check Group Exists Return",
+                        "user_exists": str(check_admin)
+                    }
+
+                    server_message_json=json.dumps(server_message)
+
+                    prepare_send = {
+                        "channel" : channel,
+                        "sender_name" : "SERVER",
+                        "target_name" : user_ID,
+                        "data" : server_message_json
+                    }
+                    
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
+
+                elif message_data["type"]=="check member in Group":
+                    group_ID=message_data["group_ID"]
+                    user_ID=message_data["user_ID"]
+                    group_exists=Group_Table.check_user_existence(group_ID,user_ID)
+                    
+                    server_message={
+                        "message_type": "Check member in Group Return",
+                        "user_exists": str(group_exists)
+                    }
+
+                    server_message_json=json.dumps(server_message)
+
+                    prepare_send = {
+                        "channel" : channel,
+                        "sender_name" : "SERVER",
+                        "target_name" : user_ID,
+                        "data" : server_message_json
+                    }
+                    
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
 
 
                 if _data_["channel"] == "DSP_MSG":
