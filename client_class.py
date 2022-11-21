@@ -65,9 +65,9 @@ class MAIN():
                 recv_data = self.sock.recv(data_len)
                 recv_data = pickle.loads(base64.b64decode(recv_data))
 
-                if(recv_data["data"]=="exited" and recv_data["sender_name"]=="SERVER"): 
+                received_message=json.loads(recv_data["data"])
+                if received_message["type"]=="Set User Offline Return":
                     x=True
-                    print("exited0")
 
                 if type(recv_data) is type({}):
                     if recv_data["channel"] == "DSP_MSG":
@@ -76,7 +76,6 @@ class MAIN():
                     elif recv_data["channel"] in self.__CUSTOM_CHANNEL:
                         self.__MESSAGE_HANDLER.append(recv_data)
             
-            print("exited1")
             self.done=True
                     
     def __sender(self,sock,message_queue):
@@ -92,8 +91,13 @@ class MAIN():
                 sock.send(bytes(str(len(prepare_for_send)),"utf-8"))
                 time.sleep(0.5)
                 sock.send(prepare_for_send)
+
+
                 message_queue.pop(i)
-                if(s["data"]=="exit"): z=True
+
+                
+                if json.loads(s["data"])["type"]=="Set User Offline":
+                    z=True
                 
         
         print("exited2")

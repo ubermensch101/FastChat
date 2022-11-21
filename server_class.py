@@ -160,46 +160,15 @@ class MAIN():
 
                             if self.__MESSAGE_QUEUES[r] == "no_data":
                                 # print("hi2")
-                                self.__MESSAGE_QUEUES[r] = data["username"]
-                                self.conClients.append(data)
+                                self.__MESSAGE_QUEUES[r] = data["user_ID"]
+                                self.conClients.append(data["user_ID"])
                                 if r not in self.__OUTPUTS:
                                     self.__OUTPUTS.append(r)
                             else:
-                                if data["data"]=="exit":
-                                    del self.__MESSAGE_QUEUES[r]
-                                    if data in self.conClients:
-                                        self.conClients.remove(data)
-                                    if r in self.__OUTPUTS:
-                                        self.__OUTPUTS.remove(r)
-                                    if r in self.__INPUTS:
-                                        self.__INPUTS.remove(r)
-                                    if r in self.__WRITABLE:
-                                        self.__WRITABLE.remove(r)
-                                    if r in writable:
-                                        writable.remove(r)
-                                    if r in exception:
-                                        exception.remove(r)
-
-                                    m={
-                                        "channel":"",
-                                        "sender_name": "SERVER",
-                                        "data": "exited"
-                                    }
-                                    last_msg = base64.b64encode(pickle.dumps(m))
-                                    print("111")
-                                    r.send(str(len(last_msg)).center(16,"|").encode("utf-8"))
-                                    time.sleep(0.5)
-                                    print("222")
-                                    r.send(last_msg)
-                                    print("333")
-                                    r.close()
-                                    print("user removed")
-
-                                else:
-                                    print("recv_msg: ",data)
-                                    self.__RECEIVING_MSG.append(data)
-                                    if r not in self.__OUTPUTS:
-                                        self.__OUTPUTS.append(r)
+                                print("recv_msg: ",data)
+                                self.__RECEIVING_MSG.append(data)
+                                if r not in self.__OUTPUTS:
+                                    self.__OUTPUTS.append(r)
                             
                         except ConnectionResetError:
                             print("User Disconnected3")
@@ -238,11 +207,70 @@ class MAIN():
                     user_password=message_data["password"]
                     User_Table.add_user(user_ID, user_password)
                 
+                
+                
+                elif message_data["type"]=="Set User Online":
+                    user_ID=message_data["user_ID"]
+                    User_Table.set_online(user_ID)
+                
+                elif message_data["type"]=="Set User Offline":
+                    user_ID=message_data["user_ID"]
+                    User_Table.set_offline(user_ID)
+
+                    server_message={
+                        "message_type": "Set User Offline Return",
+                        "user_ID": str(user_ID)
+                    }
+
+                    server_message_json=json.dumps(server_message)
+
+                    prepare_send = {
+                        "channel" : channel,
+                        "sender_name" : "SERVER",
+                        "target_name" : user_ID,
+                        "data" : server_message_json
+                    }
+
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
+                
                 elif message_data["type"]=="Send Text":
                     sender_ID=message_data["sender_ID"]
                     receiver_ID=message_data["receiver_ID"]
                     text_message=message_data["text_message"]
                     Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Text", text_message, "NULL")
+                
+                elif message_data["type"]=="Send Image":
+                    sender_ID=message_data["sender_ID"]
+                    receiver_ID=message_data["receiver_ID"]
+                    image=message_data["image"]
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Image", "NULL", image)
+                
+                elif message_data["type"]=="Create Group":
+                    group_ID=message_data["group_ID"]
+                    admin_ID=message_data["admin_ID"]
+                    Group_Table.create_group(group_ID, admin_ID)
+                
+                elif message_data["type"]=="Add Member to Group":
+                    group_ID=message_data["group_ID"]
+                    user_ID=message_data["user_ID"]
+                    Group_Table.add_to_group(group_ID, user_ID)
+
+                elif message_data["type"]=="Remove Member From Group":
+                    group_ID=message_data["group_ID"]
+                    user_ID=message_data["user_ID"]
+                    Group_Table.remove_from_group(group_ID, user_ID)
+                
+                elif message_data["type"]=="Send Group Text":
+                    group_ID=message_data["group_ID"]
+                    sender_ID=message_data["sender_ID"]
+                    text_message=message_data["text_message"]
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Text", text_message, "NULL")
+                
+                elif message_data["type"]=="Send Group Image":
+                    group_ID=message_data["group_ID"]
+                    sender_ID=message_data["sender_ID"]
+                    image=message_data["image"]
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Image", "NULL", image)
                 
                 elif message_data["type"]=="Check User Exists":
                     user_ID=message_data["user_ID"]
@@ -261,11 +289,8 @@ class MAIN():
                         "target_name" : user_ID,
                         "data" : server_message_json
                     }
-                    
-                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
-                    
-                
 
+                    self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
 
 
                 if _data_["channel"] == "DSP_MSG":
@@ -306,6 +331,23 @@ class MAIN():
                         s.send(str(len(prepare_send)).center(16,"|").encode("utf-8"))
                         time.sleep(0.5)
                         s.send(prepare_send)
+
+                        message_data=json.loads(sender_q[1][INDEX]["data"])
+                        if message_data["type"]=="Set User Offline Return":
+                            del self.__MESSAGE_QUEUES[s]
+                            if message_data["user_ID"] in self.conClients:
+                                self.conClients.remove(message_data["user_ID"])
+                            if s in self.__OUTPUTS:
+                                self.__OUTPUTS.remove(s)
+                            if s in self.__INPUTS:
+                                self.__INPUTS.remove(s)
+                            if s in self.__WRITABLE:
+                                self.__WRITABLE.remove(s)
+                            if s in self.__WRITABLE:
+                                self.__WRITABLE.remove(s)
+                            
+                            s.close()
+
                         __senderQueue.pop(INDEX)
 
 

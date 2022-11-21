@@ -75,7 +75,7 @@ class FUNCTIONS:
         user_client=client(user_ID)
         user_client.CLIENT(address, port)
         message={
-            "type": "Set user online",
+            "type": "Set User Online",
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
@@ -84,7 +84,7 @@ class FUNCTIONS:
 
     def set_user_offline(user_ID):
         message={
-            "type": "Set user online",
+            "type": "Set User Offline",
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
@@ -106,7 +106,7 @@ class FUNCTIONS:
     def send_image(sender_ID, receiver_ID, image):
         message={
             "type": "Send Image",
-            "user_ID": str(sender_ID),
+            "sender_ID": str(sender_ID),
             "receiver_ID": str(receiver_ID),
             "image": str(image)
         }
@@ -146,7 +146,7 @@ class FUNCTIONS:
 
     def send_group_text(sender_ID, group_ID, text_message):
         message={
-            "type": "Remove Member from Group",
+            "type": "Send Group Text",
             "group_ID": str(group_ID),
             "sender_ID": str(sender_ID),
             "text_message": str(text_message)
@@ -157,7 +157,7 @@ class FUNCTIONS:
 
     def send_group_image(sender_ID, group_ID, image):
         message={
-            "type": "Remove Member from Group",
+            "type": "Send Group Image",
             "group_ID": str(group_ID),
             "sender_ID": str(sender_ID),
             "image": str(image)
