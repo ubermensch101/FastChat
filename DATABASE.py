@@ -156,6 +156,25 @@ class Group_Table:
         conn.commit()
         return
 
+    def check_group_existence(group_ID):
+        check_cmd="SELECT GroupID FROM Groups WHERE GroupID = \""+str(group_ID)
+        cursor.execute(check_cmd)
+        output_check=cursor.fetchall()
+
+        if len(output_check)>0:
+            return True
+        else:
+            return False
+
+    def check_user_existence(group_ID,user_ID):
+        check_cmd="SELECT userIDList FROM Groups WHERE GroupID = \""+str(group_ID)+"\";"
+        cursor.execute(check_cmd)
+        output_check=cursor.fetchall()
+        user_list=json.loads(output_check)
+        if user_ID in user_list:
+            return True
+        else:
+            return False
 
 class Undelivered_Messages_Table:
 
@@ -216,4 +235,3 @@ class Undelivered_Messages_Table:
         cursor.execute(retrieve_cmd)
         output_retrieve=cursor.fetchall()
         return output_retrieve
-
