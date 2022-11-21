@@ -40,6 +40,7 @@ while True:
 
         FUNCTIONS.add_user(ID_input, password_input)
         print("\nUser Created! Please log in through your recently created log-in credentials now.")
+        
     elif choice=="2":
         print(DASHED_LINE)
         print("Enter your User ID")
@@ -118,7 +119,8 @@ while True:
                     if group_ID_exists:
                         print("\nGroup ID already exists! Try again. Enter 0 to go back.\n")
                 FUNCTIONS.create_group(GroupID_input, ID_input) #group ID, admin
-                print("Group created. You are the admin of this group.")
+                if group_ID_exists!="0":
+                    print("Group created. You are the admin of this group.")
             elif login_choice=="3":
                 group_exists=False
                 while not group_exists:
@@ -180,7 +182,7 @@ while True:
                         FUNCTIONS.remove_member(Group_input, user_id_removed)
                         print("User removed")
 
-            elif choice=="4":
+            elif login_choice=="4":
                 group_exists=False
                 while not group_exists:
                     print(DASHED_LINE)
