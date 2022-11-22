@@ -11,28 +11,6 @@ class MAIN():
 
     def __init__(self):
 
-        # self.__debug = debug
-
-        # if MPCL and MTCL:
-        #     raise ValueError("both 'MPCL' abd 'MTCL' should not be set to True")
-
-        # elif not MPCL and not MTCL:
-        #     raise ValueError("both 'MPCL' abd 'MTCL' should not be set to False")
-
-        # else:
-        #     self.__MPCL = MPCL
-        #     self.__MTCL = MTCL
-
-        # if secure:
-        #     if not file:
-        #         raise TypeError("__init__() missing 1 required positional argument: 'file'")
-        #     else:
-        #         self.__secure = secure
-        #         self.__file_location = file
-
-        # else:
-        #     self.__secure = secure
-
         self.__READABLE = []
         self.__WRITABLE = []
         self.__INPUTS = []
@@ -91,17 +69,36 @@ class MAIN():
             )
         )
 
+        sending_undeliverd_msg_thread = threading.Thread(
+            target=self.__undelivered_msg,
+            args=()
+        )
 
         server_thread.daemon = True
         receiver_thread.daemon = True
         sender_thread.daemon = True
         callback_loop_thread.daemon = True
+        sending_undeliverd_msg_thread.daemon = True
 
         server_thread.start()
         receiver_thread.start()
         sender_thread.start()
         callback_loop_thread.start()
+        sending_undeliverd_msg_thread.start()
 
+
+    def __undelivered_msg(self):
+        
+        while True:
+            undeliverd_msg_list=Undelivered_Messages_Table.get_all_undelivered_messages()
+            for m in undeliverd_msg_list:
+                msg=json.loads(m[5])
+                if m[2]=="Group":
+                    user_list=Group_Table.get_user_list(m[3])
+                    for u in user_list:
+                        self.__SENDER_QUEUE.append(u,msg)
+                elif m[2]=="Receiver":
+                    self.__SENDER_QUEUE.append(m[1],msg)
 
     def __server(self):
         data_recv_len = []
@@ -218,7 +215,7 @@ class MAIN():
                     User_Table.set_offline(user_ID)
 
                     server_message={
-                        "message_type": "Set User Offline Return",
+                        "type": "Set User Offline Return",
                         "user_ID": str(user_ID)
                     }
 
@@ -299,7 +296,7 @@ class MAIN():
                     
                     server_message={
                         "type": "Check User Password Return",
-                        "user_exists": str(check_password)
+                        "password_correct": str(check_password)
                     }
 
                     server_message_json=json.dumps(server_message)
@@ -319,7 +316,7 @@ class MAIN():
                     
                     server_message={
                         "type": "Check Group Exists Return",
-                        "user_exists": str(group_exists)
+                        "group_exists": str(group_exists)
                     }
 
                     server_message_json=json.dumps(server_message)
@@ -339,8 +336,8 @@ class MAIN():
                     check_admin=Group_Table.check_admin(group_ID,admin_ID)
                     
                     server_message={
-                        "type": "Check Group Exists Return",
-                        "user_exists": str(check_admin)
+                        "type": "Check Admin For Group Return",
+                        "admin_correct": str(check_admin)
                     }
 
                     server_message_json=json.dumps(server_message)
@@ -354,14 +351,14 @@ class MAIN():
                     
                     self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
 
-                elif message_data["type"]=="Check Member in Group":
+                elif message_data["type"]=="check Member In Group":
                     group_ID=message_data["group_ID"]
                     user_ID=message_data["user_ID"]
-                    group_exists=Group_Table.check_user_existence(group_ID,user_ID)
+                    member_exists=Group_Table.check_user_existence(group_ID,user_ID)
                     
                     server_message={
                         "type": "Check Member In Group Return",
-                        "user_exists": str(group_exists)
+                        "member_exists": str(member_exists)
                     }
 
                     server_message_json=json.dumps(server_message)
@@ -376,13 +373,13 @@ class MAIN():
                     self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
 
 
-                '''if _data_["channel"] == "DSP_MSG":
-                    print("data: " ,_data_)
-                    __bypassMsg.append([_data_["target_name"],_data_])
-                    __receivingMsg.pop(i)
-                elif _data_["channel"] in __customChannel:
-                    __messageHandler.append(_data_)
-                    __receivingMsg.pop(i)'''
+                # if _data_["channel"] == "DSP_MSG":
+                #     print("data: " ,_data_)
+                #     __bypassMsg.append([_data_["target_name"],_data_])
+                #     __receivingMsg.pop(i)
+                # elif _data_["channel"] in __customChannel:
+                #     __messageHandler.append(_data_)
+                #     __receivingMsg.pop(i)
 
     def __sender(self,__writable, __messageQueue, __bypassMsg, __senderQueue ):
         while True:
