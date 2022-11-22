@@ -92,13 +92,24 @@ class MAIN():
         while True:
             undeliverd_msg_list=Undelivered_Messages_Table.get_all_undelivered_messages()
             for m in undeliverd_msg_list:
-                msg=json.loads(m[5])
-                if m[2]=="Group":
-                    user_list=Group_Table.get_user_list(m[3])
-                    for u in user_list:
-                        self.__SENDER_QUEUE.append(u,msg)
-                elif m[2]=="Receiver":
-                    self.__SENDER_QUEUE.append(m[1],msg)
+                if m[4]=="Text":
+                    text_message=json.loads(m[5])
+                    if m[2]=="Group":
+                        user_list=Group_Table.get_user_list(m[3])
+                        for u in user_list:
+                            if u in self.conClients:  # Improve this by storing server in User Table, and checking if u is connected to server. Although this may be the best solution.
+                                self.__SENDER_QUEUE.append(u, text_message)
+                    elif m[2]=="Receiver":
+                        self.__SENDER_QUEUE.append(m[1], text_message)
+                elif m[4]=="Image":
+                    image=json.loads(m[6])
+                    if m[2]=="Group":
+                        user_list=Group_Table.get_user_list(m[3])
+                        for u in user_list:
+                            if u in self.conClients:
+                                self.__SENDER_QUEUE.append(u, image)
+                    elif m[2]=="Receiver":
+                        self.__SENDER_QUEUE.append(m[1], image)
 
     def __server(self):
         data_recv_len = []
