@@ -7,6 +7,16 @@ import hashlib
 import json
 import time
 
+received_from_server={
+    "Check User Exists Return": None,
+    "Check User Password Return": None,
+    "Check Group Exists Return": None,
+    "Check Admin For Group Return": None,
+    "Check Member in Group Return": None
+}
+
+DASHED_LINE="\033[91m"+"--------------------"+"\033[0m"
+
 class MAIN():
 
     def __init__(self,client_name : str = None):
@@ -68,6 +78,56 @@ class MAIN():
                 received_message=json.loads(recv_data["data"])
                 if received_message["type"]=="Set User Offline Return":
                     x=True
+                elif received_message["type"]=="Check User Exists Return":
+                    received_from_server["Check User Exists Return"]=received_message["user_exists"]
+                
+                elif received_message["type"]=="Check User Password Return":
+                    received_from_server["Check User Password Return"]=received_message["password_correct"]
+                
+                elif received_message["type"]=="Check Group Exists Return":
+                    received_from_server["Check Group Exists Return"]=received_message["group_exists"]
+                
+                elif received_message["type"]=="Check Admin For Group Return":
+                    received_from_server["Check Admin For Group Return"]=received_message["admin_correct"]
+                
+                elif received_message["type"]=="Check Member in Group Return":
+                    received_from_server["Check Member in Group Return"]=received_message["member_exists"]
+                
+                elif received_message["type"]=="Send Text":
+                    print("\nMessage Received!")
+                    print(DASHED_LINE)
+                    print(received_message["text_message"])
+                    print("\03391m[Received from:\033[0m "+received_message["sender_ID"])
+                    print(DASHED_LINE)
+                    print("")
+                
+                elif received_message["type"]=="Send Image":
+                    print("\nMessage Received!")
+                    print(DASHED_LINE)
+                    print(received_message["image"])
+                    print("\03391m[Received from:\033[0m "+received_message["sender_ID"])
+                    print(DASHED_LINE)
+                    print("")
+                
+                elif received_message["type"]=="Send Group Text":
+                    print("\nMessage Received From Group!")
+                    print(DASHED_LINE)
+                    print(received_message["text_message"])
+                    print("\03391m[Received from:\033[0m "+received_message["sender_ID"])
+                    print("\03391m[Group ID:\033[0m "+received_message["group_ID"])
+                    print(DASHED_LINE)
+                    print("")
+                
+                elif received_message["type"]=="Send Group Image":
+                    print("\nMessage Received From Group!")
+                    print(DASHED_LINE)
+                    print(received_message["image"])
+                    print("\03391m[Received from:\033[0m "+received_message["sender_ID"])
+                    print("\03391m[Group ID:\033[0m "+received_message["group_ID"])
+                    print(DASHED_LINE)
+                    print("")
+
+
 
                 if type(recv_data) is type({}):
                     if recv_data["channel"] == "DSP_MSG":
@@ -109,7 +169,6 @@ class MAIN():
                 callback_lst.pop(i)
                 func[0](*func[1])
 
-        print("exited3")
 
     def CREATE_CHANNEL(self,channels : str = None, multiple : bool = False):
 
@@ -161,19 +220,14 @@ class MAIN():
         # print("data: ", data)
         if type(data) in allowed_lst:
             if channel in self.__CUSTOM_CHANNEL:
+
                 prepare_send_data = {
                     "channel" : channel,
                     "type":"",
                     "sender_name" : self.__client_name,
                     "target_name" : "SERVER",
                     "data" : data
-                    }
-                
-                if type(data)==dict and "password" in data.keys():
-                    # print("dictionary")
-                    prepare_send_data=data
-                
-                # print(prepare_send_data)
+                }
 
                 self.__SENDER_QUEUE.append(prepare_send_data)
 

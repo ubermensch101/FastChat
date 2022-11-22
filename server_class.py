@@ -237,13 +237,13 @@ class MAIN():
                     sender_ID=message_data["sender_ID"]
                     receiver_ID=message_data["receiver_ID"]
                     text_message=message_data["text_message"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Text", text_message, "NULL")
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Text", json.dumps(_data_), "NULL")
                 
                 elif message_data["type"]=="Send Image":
                     sender_ID=message_data["sender_ID"]
                     receiver_ID=message_data["receiver_ID"]
                     image=message_data["image"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Image", "NULL", image)
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Image", "NULL", json.dumps(_data_))
                 
                 elif message_data["type"]=="Create Group":
                     group_ID=message_data["group_ID"]
@@ -264,20 +264,20 @@ class MAIN():
                     group_ID=message_data["group_ID"]
                     sender_ID=message_data["sender_ID"]
                     text_message=message_data["text_message"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Text", text_message, "NULL")
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Text", json.dumps(text_message), "NULL")
                 
                 elif message_data["type"]=="Send Group Image":
                     group_ID=message_data["group_ID"]
                     sender_ID=message_data["sender_ID"]
                     image=message_data["image"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Image", "NULL", image)
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Image", "NULL", json.dumps(image))
                 
                 elif message_data["type"]=="Check User Exists":
                     user_ID=message_data["user_ID"]
                     user_exists=User_Table.check_user_existence(user_ID)
                     
                     server_message={
-                        "message_type": "Check User Exists Return",
+                        "type": "Check User Exists Return",
                         "user_exists": str(user_exists)
                     }
 
@@ -298,7 +298,7 @@ class MAIN():
                     check_password=User_Table.check_user_password(user_ID,user_password)
                     
                     server_message={
-                        "message_type": "Check User Password Return",
+                        "type": "Check User Password Return",
                         "user_exists": str(check_password)
                     }
 
@@ -318,7 +318,7 @@ class MAIN():
                     group_exists=Group_Table.check_group_existence(group_ID)
                     
                     server_message={
-                        "message_type": "Check Group Exists Return",
+                        "type": "Check Group Exists Return",
                         "user_exists": str(group_exists)
                     }
 
@@ -339,7 +339,7 @@ class MAIN():
                     check_admin=Group_Table.check_admin(group_ID,admin_ID)
                     
                     server_message={
-                        "message_type": "Check Group Exists Return",
+                        "type": "Check Group Exists Return",
                         "user_exists": str(check_admin)
                     }
 
@@ -354,13 +354,13 @@ class MAIN():
                     
                     self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
 
-                elif message_data["type"]=="check member in Group":
+                elif message_data["type"]=="Check Member in Group":
                     group_ID=message_data["group_ID"]
                     user_ID=message_data["user_ID"]
                     group_exists=Group_Table.check_user_existence(group_ID,user_ID)
                     
                     server_message={
-                        "message_type": "Check member in Group Return",
+                        "type": "Check Member In Group Return",
                         "user_exists": str(group_exists)
                     }
 
@@ -376,13 +376,13 @@ class MAIN():
                     self.__SENDER_QUEUE.append([prepare_send["target_name"], prepare_send])
 
 
-                if _data_["channel"] == "DSP_MSG":
+                '''if _data_["channel"] == "DSP_MSG":
                     print("data: " ,_data_)
                     __bypassMsg.append([_data_["target_name"],_data_])
                     __receivingMsg.pop(i)
                 elif _data_["channel"] in __customChannel:
                     __messageHandler.append(_data_)
-                    __receivingMsg.pop(i)
+                    __receivingMsg.pop(i)'''
 
     def __sender(self,__writable, __messageQueue, __bypassMsg, __senderQueue ):
         while True:

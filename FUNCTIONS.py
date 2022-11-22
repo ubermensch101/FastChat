@@ -1,6 +1,7 @@
 import random
-from client_class import client
+from client_class import client, received_from_server
 import json
+import time
 
 
 address="0.0.0.0"
@@ -15,12 +16,28 @@ user_client=None
 class FUNCTIONS:
 
     def check_user_exists(user_ID):
+
         message={
             "type": "Check User Exists",
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
         dummy_client.SEND(message_json)
+
+        counter=0
+        while received_from_server["Check User Exists Return"] is not None:
+            time.sleep(0.1)
+            counter+=1
+            if counter>100:
+                break
+        
+        is_received=received_from_server["Check User Exists Return"]
+        received_from_server["Check User Exists Return"]=None
+
+        if is_received=="True":
+            return True
+        else:
+            return False
 
     def check_user_password(user_ID, user_password):
         message={
@@ -30,6 +47,21 @@ class FUNCTIONS:
         }
         message_json=json.dumps(message)
         dummy_client.SEND(message_json)
+
+        counter=0
+        while received_from_server["Check User Password Return"] is not None:
+            time.sleep(0.1)
+            counter+=1
+            if counter>100:
+                break
+        
+        is_received=received_from_server["Check User Password Return"]
+        received_from_server["Check User Password Return"]=None
+
+        if is_received=="True":
+            return True
+        else:
+            return False
     
 
     def check_group_exists(group_ID):
@@ -39,6 +71,21 @@ class FUNCTIONS:
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)
+
+        counter=0
+        while received_from_server["Check Group Exists Return"] is not None:
+            time.sleep(0.1)
+            counter+=1
+            if counter>100:
+                break
+        
+        is_received=received_from_server["Check Group Exists Return"]
+        received_from_server["Check Group Exists Return"]=None
+
+        if is_received=="True":
+            return True
+        else:
+            return False
     
 
     def check_admin(group_ID, admin_ID):
@@ -49,16 +96,46 @@ class FUNCTIONS:
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)
+
+        counter=0
+        while received_from_server["Check Admin For Group Return"] is not None:
+            time.sleep(0.1)
+            counter+=1
+            if counter>100:
+                break
+        
+        is_received=received_from_server["Check Admin For Group Return"]
+        received_from_server["Check Admin For Group Return"]=None
+
+        if is_received=="True":
+            return True
+        else:
+            return False
     
 
     def check_member(group_ID, user_ID):
         message={
-            "type": "Remove Member from Group",
+            "type": "Check Member in Group",
             "group_ID": str(group_ID),
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)
+
+        counter=0
+        while received_from_server["Check Member in Group Return"] is not None:
+            time.sleep(0.1)
+            counter+=1
+            if counter>100:
+                break
+        
+        is_received=received_from_server["Check Member in Group Return"]
+        received_from_server["Check Member in Group Return"]=None
+
+        if is_received=="True":
+            return True
+        else:
+            return False
     
 
     def add_user(user_ID, user_password):
