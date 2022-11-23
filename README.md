@@ -17,11 +17,13 @@ How to run it:
 -Follow front-end as a client to sign up, log in, send texts, create groups and so on.
 
 Yet to be done:
+
 -Encryption
 -Handling images
 -Load balancing techniques
 
 Team member's contributions:
+
 Aaryan- Database, Client class, Debugging
 Hruday- Server class, Multi-threading, Debugging
 Kesava- Front-end, Encryption, Debugging
