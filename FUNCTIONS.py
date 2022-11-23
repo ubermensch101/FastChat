@@ -5,7 +5,7 @@ import time
 
 
 address="0.0.0.0"
-port=8080
+port=8081
 
 dummy_client=client("0000000"+str(random.randint(0, 1000)))
 dummy_client.CLIENT(address, port)
@@ -22,17 +22,20 @@ class FUNCTIONS:
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
+        # print("0")
         dummy_client.SEND(message_json)
-
+        # print("sent")
         counter=0
-        while received_from_server["Check User Exists Return"] is not None:
+        while received_from_server["Check User Exists Return"] is None:
             time.sleep(0.1)
             counter+=1
             if counter>100:
                 break
         
+        # print("recvd")
         is_received=received_from_server["Check User Exists Return"]
         received_from_server["Check User Exists Return"]=None
+        
 
         if is_received=="True":
             return True
@@ -49,7 +52,7 @@ class FUNCTIONS:
         dummy_client.SEND(message_json)
 
         counter=0
-        while received_from_server["Check User Password Return"] is not None:
+        while received_from_server["Check User Password Return"] is None:
             time.sleep(0.1)
             counter+=1
             if counter>100:
@@ -57,6 +60,13 @@ class FUNCTIONS:
         
         is_received=received_from_server["Check User Password Return"]
         received_from_server["Check User Password Return"]=None
+        message={
+            "type": "Set User Offline",
+            "user_ID": str(user_ID)
+        }
+        message_json=json.dumps(message)
+        dummy_client.SEND(message_json)
+        dummy_client.CLOSE()
 
         if is_received=="True":
             return True
@@ -73,7 +83,7 @@ class FUNCTIONS:
         user_client.SEND(message_json)
 
         counter=0
-        while received_from_server["Check Group Exists Return"] is not None:
+        while received_from_server["Check Group Exists Return"] is None:
             time.sleep(0.1)
             counter+=1
             if counter>100:
@@ -98,7 +108,7 @@ class FUNCTIONS:
         user_client.SEND(message_json)
 
         counter=0
-        while received_from_server["Check Admin For Group Return"] is not None:
+        while received_from_server["Check Admin For Group Return"] is None:
             time.sleep(0.1)
             counter+=1
             if counter>100:
@@ -123,7 +133,7 @@ class FUNCTIONS:
         user_client.SEND(message_json)
 
         counter=0
-        while received_from_server["Check Member in Group Return"] is not None:
+        while received_from_server["Check Member in Group Return"] is None:
             time.sleep(0.1)
             counter+=1
             if counter>100:
@@ -145,10 +155,12 @@ class FUNCTIONS:
             "password": str(user_password)
         }
         message_json=json.dumps(message)
-        dummy_client.SEND_TO_DATABASE(message_json)
+        dummy_client.SEND(message_json)
     
     
     def set_user_online(user_ID):
+        global user_client
+        
         user_client=client(user_ID)
         user_client.CLIENT(address, port)
         message={
@@ -156,7 +168,7 @@ class FUNCTIONS:
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
     
 
     def set_user_offline(user_ID):
@@ -165,7 +177,7 @@ class FUNCTIONS:
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
         user_client.CLOSE()
     
 
@@ -177,7 +189,7 @@ class FUNCTIONS:
             "text_message": str(text_message)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
     
 
     def send_image(sender_ID, receiver_ID, image):
@@ -188,7 +200,7 @@ class FUNCTIONS:
             "image": str(image)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
     
 
     def create_group(group_ID, admin_ID):
@@ -198,7 +210,7 @@ class FUNCTIONS:
             "admin_ID": str(admin_ID),
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
 
     
     def add_member(group_ID, user_ID):
@@ -208,7 +220,7 @@ class FUNCTIONS:
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
     
 
     def remove_member(group_ID, user_ID):
@@ -218,7 +230,7 @@ class FUNCTIONS:
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
     
 
     def send_group_text(sender_ID, group_ID, text_message):
@@ -229,7 +241,7 @@ class FUNCTIONS:
             "text_message": str(text_message)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
+        user_client.SEND(message_json)
     
 
     def send_group_image(sender_ID, group_ID, image):
@@ -240,45 +252,4 @@ class FUNCTIONS:
             "image": str(image)
         }
         message_json=json.dumps(message)
-        user_client.SEND_TO_DATABASE(message_json)
-
-    
-        
-
-    
-
-
-
-
-
-
-def check_user_exists(user_ID):
-    return random.randint(0, 1)
-def check_user_password(user_ID, user_password):
-    return True
-def add_user(user_ID, user_password):
-    return
-def set_user_online(user_ID):
-    return
-def set_user_offline(user_ID):
-    return
-def send_text(sender_ID, receiver_ID, text_message):
-    return
-def send_image(sender_ID, receiver_ID, image):
-    return
-def create_group(group_ID, admin_ID):
-    return
-def check_group_exists(group_ID):
-    return random.randint(0, 1)
-def check_admin(group_Id, admin_ID):
-    return random.randint(0, 1)
-def add_member(group_ID, user_ID):
-    return
-def remove_member(group_ID, user_ID):
-    return
-def check_member(group_ID, user_ID):
-    return True
-def send_group_text(sender_ID, group_ID, text_message):
-    return
-def send_group_image(sender_ID, group_ID, image):
-    return
+        user_client.SEND(message_json)
