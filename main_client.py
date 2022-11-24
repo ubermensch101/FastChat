@@ -133,7 +133,11 @@ while True:
                         continue
                     correct_admin=FUNCTIONS.check_admin(Group_input, ID_input)
                     if not correct_admin:
-                        group_ID_exists=False
+                        print("\nYou are not the admin of this group\n")
+                        group_exists=False
+                    
+                if Group_input=="0":
+                    continue
 
                 while True:
                     print("\nAs the admin of group "+str(Group_input)+", please choose the action you want to perform:")

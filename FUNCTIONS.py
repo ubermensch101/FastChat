@@ -12,7 +12,7 @@ dummy_client=client("0000000"+str(random.randint(0, 1000)))
 dummy_client.CLIENT(address, port)
 
 user_client=None
-print("port: ",port)
+print("port:",port)
 
 class FUNCTIONS:
 

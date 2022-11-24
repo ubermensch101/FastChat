@@ -121,10 +121,14 @@ class MAIN():
         while not z:
             for i,s in enumerate(sender_queue):
                 
-                print("msg2: ",s)
+                print("msg2:",s)
                 prepare_for_send = base64.b64encode(pickle.dumps(s))
-                sock.send(bytes(str(len(prepare_for_send)),"utf-8"))
-                time.sleep(0.5)
+
+                send_length=str(len(prepare_for_send))
+                for kappa in range(8-len(send_length)):
+                    send_length="0"+send_length
+                
+                sock.send(bytes(send_length,"utf-8"))
                 sock.send(prepare_for_send)
 
 

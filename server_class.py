@@ -67,31 +67,33 @@ class MAIN():
 
     def __undelivered_msg(self):
         while True:
-            time.sleep(3)
+            # time.sleep(3)
             undeliverd_msg_list=Undelivered_Messages_Table.get_all_undelivered_messages()
             for m in undeliverd_msg_list:
                 print("u_m_l: ",m)
                 if m[4]=="Text":
                     text_message=json.loads(m[5].replace("'","\""))
                     if m[2]=="Group":
-                        user_list=Group_Table.get_user_list(m[3])
+                        user_list=Undelivered_Messages_Table.get_unsent_id_list(m[3],m[0],m[5],m[6])
                         for u in user_list:
                             if u in self.conClients:  # Improve this by storing server in User Table, and checking if u is connected to server. Although this may be the best solution.
                                 self.__SENDER_QUEUE.append([u, text_message])
-                                Undelivered_Messages_Table.remove_undelivered_pair(m[0],m[1],m[5],m[6])
+                                Undelivered_Messages_Table.remove_unsent_id(m[3],m[0],m[1],u,m[5],m[6])
                     elif m[2]=="Receiver":
                         if m[1] in self.conClients:
                             self.__SENDER_QUEUE.append([m[1], text_message])
+                            print("bug1")
                             Undelivered_Messages_Table.remove_undelivered_pair(m[0],m[1],m[5],m[6])
+                            print("bug2")
                 elif m[4]=="Image":
                     image=m[6].replace("'","\"")
                     image=json.loads(image)
                     if m[2]=="Group":
-                        user_list=Group_Table.get_user_list(m[3])
+                        user_list=Undelivered_Messages_Table.get_unsent_id_list(m[3],m[0],m[5],m[6])
                         for u in user_list:
                             if u in self.conClients:
                                 self.__SENDER_QUEUE.append([u, image])
-                                Undelivered_Messages_Table.remove_undelivered_pair(m[0],m[1],m[5],m[6])
+                                Undelivered_Messages_Table.remove_unsent_id(m[3],m[0],m[1],u,m[5],m[6])
                     elif m[2]=="Receiver":
                         if m[1] in self.conClients:
                             self.__SENDER_QUEUE.append([m[1], image])
@@ -120,7 +122,7 @@ class MAIN():
                         try:
                             print("recving length")
                             if r in self.__INPUTS:
-                                data_len = int(r.recv(16).decode())
+                                data_len = int(r.recv(8).decode())
                             else: 
                                 continue
                             print("data_len: ",data_len)
@@ -243,13 +245,13 @@ class MAIN():
                     text_message=message_data["text_message"]
                     print(type(_data_))
                     print(json.dumps(_data_))
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Text", json.dumps(_data_), "NULL")
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Text", json.dumps(_data_), "NULL",json.dumps([receiver_ID]))
                 
                 elif message_data["type"]=="Send Image":
                     sender_ID=message_data["sender_ID"]
                     receiver_ID=message_data["receiver_ID"]
                     image=message_data["image"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Image", "NULL", json.dumps(_data_))
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, receiver_ID, "Receiver", "NULL", "Image", "NULL", json.dumps(_data_),json.dumps([receiver_ID]))
                 
                 elif message_data["type"]=="Create Group":
                     group_ID=message_data["group_ID"]
@@ -270,13 +272,13 @@ class MAIN():
                     group_ID=message_data["group_ID"]
                     sender_ID=message_data["sender_ID"]
                     text_message=message_data["text_message"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Text", json.dumps(_data_), "NULL")
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Text", json.dumps(_data_), "NULL",json.dumps(Group_Table.get_user_list(group_ID)))
                 
                 elif message_data["type"]=="Send Group Image":
                     group_ID=message_data["group_ID"]
                     sender_ID=message_data["sender_ID"]
                     image=message_data["image"]
-                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Image", "NULL", json.dumps(_data_))
+                    Undelivered_Messages_Table.add_undelivered_pair(sender_ID, "NULL", "Group", group_ID, "Image", "NULL", json.dumps(_data_),json.dumps(Group_Table.get_user_list(group_ID)))
                 
                 elif message_data["type"]=="Check User Exists":
                     user_ID=message_data["user_ID"]
@@ -398,8 +400,11 @@ class MAIN():
                     if username in sender_q[0]:
                         INDEX = sender_q[0].index(username)
                         prepare_send = base64.b64encode(pickle.dumps(sender_q[1][INDEX]))
+                        send_length=str(len(prepare_send))
+                        for kappa in range(8-len(send_length)):
+                            send_length="0"+send_length
+                            
                         s.send(str(len(prepare_send)).center(16,"|").encode("utf-8"))
-                        time.sleep(0.5)
                         s.send(prepare_send)
                         print("msg_sent: ",sender_q[1][INDEX])
 

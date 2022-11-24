@@ -2,6 +2,8 @@ import sqlite3
 import json
 import threading
 
+global lock
+
 conn=sqlite3.connect("user_data.db",check_same_thread=False)
 cursor=conn.cursor()
 lock = threading.Lock()
@@ -250,7 +252,8 @@ class Undelivered_Messages_Table:
         GroupID TEXT,
         Text_Image TEXT,
         Text TEXT,
-        Image TEXT
+        Image TEXT,
+        UnsentIDList TEXT
         );'''
         cursor.execute(create_cmd)
         conn.commit()
@@ -260,23 +263,26 @@ class Undelivered_Messages_Table:
     def get_all_undelivered_messages():
         lock.acquire()
         all_cmd="SELECT * FROM Undelivered"
+        cursor=conn.cursor()
         msg_list=cursor.execute(all_cmd)
         conn.commit()
         lock.release()
         return msg_list
 
-    def add_undelivered_pair(sender_ID, receiver_ID, receiver_or_group, group_ID, text_or_image, text, image):
+    def add_undelivered_pair(sender_ID, receiver_ID, receiver_or_group, group_ID, text_or_image, text, image,unsent_id_list):
         lock.acquire(True)
         text=text.replace("\"","'")
         image=image.replace("\"", "'")
-        add_cmd="INSERT INTO Undelivered (SenderID, ReceiverID, Receiver_Group, GroupID, Text_Image, Text, Image) VALUES (\""
+        unsent_id_list=unsent_id_list.replace("\"","'")
+        add_cmd="INSERT INTO Undelivered (SenderID, ReceiverID, Receiver_Group, GroupID, Text_Image, Text, Image, UnsentIDList) VALUES (\""
         add_cmd+=str(sender_ID)+"\", \""
         add_cmd+=str(receiver_ID)+"\", \""
         add_cmd+=str(receiver_or_group)+"\", \""
         add_cmd+=str(group_ID)+"\", \""
         add_cmd+=str(text_or_image)+"\", \""
         add_cmd+=text+"\", \""
-        add_cmd+=str(image)+"\");"
+        add_cmd+=str(image)+"\", \""
+        add_cmd+=str(unsent_id_list)+"\");"
 
         # print(add_cmd)
 
@@ -294,9 +300,24 @@ class Undelivered_Messages_Table:
         delete_cmd+="\" AND Image = \""+str(image)
         delete_cmd+="\";"
 
+        print("removed from table in up1")
         cursor.execute(delete_cmd)
         conn.commit()
         lock.release()
+        print("removed from table in up2")
+        return
+    
+    def remove_undelivered_pair_from_database(sender_ID, receiver_ID, text, image):
+        delete_cmd="DELETE FROM Undelivered WHERE SenderID = \""
+        delete_cmd+=str(sender_ID)
+        delete_cmd+="\" AND ReceiverID = \""+str(receiver_ID)
+        delete_cmd+="\" AND Text = \""+str(text)
+        delete_cmd+="\" AND Image = \""+str(image)
+        delete_cmd+="\";"
+
+        cursor.execute(delete_cmd)
+        conn.commit()
+        print("removed from table")
         return
 
     def retrieve_receiver_messages(receiver_ID):
@@ -307,3 +328,58 @@ class Undelivered_Messages_Table:
         output_retrieve=cursor.fetchall()
         lock.release()
         return output_retrieve
+    
+    def get_unsent_id_list(group_ID, sender_ID, text, image):
+        lock.acquire(True)
+        text=text.replace("\"","'")
+        image=image.replace("\"", "'")
+        
+        user_list_cmd="SELECT UnsentIDList FROM Undelivered WHERE GroupID = \""+str(group_ID)+"\" AND "
+        user_list_cmd+="Text = \""+str(text)+"\" AND "
+        user_list_cmd+="Image = \""+str(image)+"\" AND "
+        user_list_cmd+="SenderID = \""+str(sender_ID)+"\" ;"
+
+        cursor.execute(user_list_cmd)
+
+        output_user_list_json=cursor.fetchall()[0][0]
+        output_user_list_json=output_user_list_json.replace("'", "\"")
+        output_user_list=json.loads(output_user_list_json)
+
+        lock.release()
+
+        return output_user_list
+
+    def remove_unsent_id(group_ID,sender_ID,receiver_ID,removing_ID,text,image):
+        lock.acquire(True)
+        text=text.replace("\"","'")
+        image=image.replace("\"", "'")
+        
+        user_list_cmd="SELECT UnsentIDList FROM Undelivered WHERE GroupID = \""+str(group_ID)+"\" AND "
+        user_list_cmd+="Text = \""+str(text)+"\" AND "
+        user_list_cmd+="Image = \""+str(image)+"\" AND "
+        user_list_cmd+="SenderID = \""+str(sender_ID)+"\" ;"
+        cursor.execute(user_list_cmd)
+        output_user_list=cursor.fetchall()[0][0]
+
+        print("before_r_u_l:",output_user_list)
+        output_user_list=output_user_list.replace("'","\"")
+        output_user_list=json.loads(output_user_list)
+
+        if removing_ID in output_user_list:
+            output_user_list.remove(removing_ID)
+        print("output_u_list:",output_user_list)
+
+        if len(output_user_list) > 0 :
+            user_list_json=json.dumps(output_user_list)
+            user_list_json=user_list_json.replace("\"","'")
+            new_user_list_json_cmd="UPDATE Undelivered SET UnsentIDList = \""+str(user_list_json)+"\" "
+            new_user_list_json_cmd+="WHERE GroupID = \""+str(group_ID)+"\" AND "
+            new_user_list_json_cmd+="SenderID = \""+str(sender_ID)+"\" AND "
+            new_user_list_json_cmd+="Text = \""+str(text)+"\" ;"
+            cursor.execute(new_user_list_json_cmd)
+            conn.commit()
+        else:
+            Undelivered_Messages_Table.remove_undelivered_pair_from_database(sender_ID,receiver_ID,text,image)
+            print("undelivered msg removed")
+        lock.release()
+        return
