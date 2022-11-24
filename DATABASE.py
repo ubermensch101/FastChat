@@ -122,20 +122,38 @@ class Group_Table:
         output_user_list=cursor.fetchall()
         lock.release()
         if len(output_user_list)==0:
+            print("user list empty")
             return []
         else:
-            user_list_json=output_user_list[0]
+            user_list_json=output_user_list[0][0]
+            user_list_json=user_list_json.replace("'", "\"")
             user_list=json.loads(user_list_json)
+            print("user_list: ",user_list)
+            return user_list
+    
+    def get_user_list_database(group_ID):
+        user_list_cmd="SELECT UserIDList FROM Groups WHERE GroupID = \""+str(group_ID)+"\";"
+        cursor.execute(user_list_cmd)
+        output_user_list=cursor.fetchall()
+        if len(output_user_list)==0:
+            print("user list empty")
+            return []
+        else:
+            user_list_json=output_user_list[0][0]
+            user_list_json=user_list_json.replace("'", "\"")
+            user_list=json.loads(user_list_json)
+            print("user_list: ",user_list)
             return user_list
 
     def create_group(group_ID, admin_ID):
         lock.acquire(True)
         user_list_json=json.dumps([admin_ID])
-
+        user_list_json=user_list_json.replace("\"","'")
         create_cmd="INSERT INTO Groups (GroupID, AdminID, UserIDList) VALUES (\""
         create_cmd+=str(group_ID)
         create_cmd+="\", \""+str(admin_ID)
         create_cmd+="\", \""+str(user_list_json)+"\");"
+        print(create_cmd)
 
         cursor.execute(create_cmd)
         conn.commit()
@@ -144,12 +162,14 @@ class Group_Table:
 
     def add_to_group(group_ID, user_ID):
         lock.acquire(True)
-        user_list=Group_Table.get_user_list(group_ID)
+        user_list=Group_Table.get_user_list_database(group_ID)
+        
         if user_ID not in user_list:
             user_list.append(user_ID)
+        print(user_list)
         user_list_json=json.dumps(user_list)
-
-        user_list_cmd="UPDATE GroupID "
+        user_list_json=user_list_json.replace("\"","'")
+        user_list_cmd="UPDATE Groups "
         user_list_cmd+="SET UserIDList = \""+str(user_list_json)
         user_list_cmd+="\" WHERE GroupID = \""+str(group_ID)
         user_list_cmd+="\";"
@@ -162,15 +182,23 @@ class Group_Table:
 
     def remove_from_group(group_ID, user_ID):
         lock.acquire(True)
-        if(Group_Table.check_admin(user_ID)):
+
+        check_cmd="SELECT GroupID FROM Groups WHERE GroupID = \""+str(group_ID)
+        check_cmd+="\" AND AdminID = \""+str(user_ID)+"\";"
+        cursor.execute(check_cmd)
+        output_check=cursor.fetchall()
+
+        if len(output_check)>0:
             return
         
-        user_list=Group_Table.get_user_list(group_ID)
+        user_list=Group_Table.get_user_list_database(group_ID)
+        print("before",user_list)
         if user_ID in user_list:
             user_list.remove(user_ID)
+        print("after",user_list)
         user_list_json=json.dumps(user_list)
-
-        user_list_cmd="UPDATE GroupID "
+        user_list_json=user_list_json.replace("\"","'")
+        user_list_cmd="UPDATE Groups "
         user_list_cmd+="SET UserIDList = \""+str(user_list_json)
         user_list_cmd+="\" WHERE GroupID = \""+str(group_ID)
         user_list_cmd+="\";"
@@ -182,7 +210,7 @@ class Group_Table:
 
     def check_group_existence(group_ID):
         lock.acquire(True)
-        check_cmd="SELECT GroupID FROM Groups WHERE GroupID = \""+str(group_ID)
+        check_cmd="SELECT GroupID FROM Groups WHERE GroupID = \""+str(group_ID)+"\";"
         cursor.execute(check_cmd)
         output_check=cursor.fetchall()
         lock.release()
@@ -193,11 +221,14 @@ class Group_Table:
 
     def check_user_existence(group_ID,user_ID):
         lock.acquire(True)
-        check_cmd="SELECT userIDList FROM Groups WHERE GroupID = \""+str(group_ID)+"\";"
+        check_cmd="SELECT UserIDList FROM Groups WHERE GroupID = \""+str(group_ID)+"\";"
         cursor.execute(check_cmd)
-        output_check=cursor.fetchall()
+        output_check=cursor.fetchall()[0][0]
         lock.release()
+
+        output_check=output_check.replace("'", "\"")
         user_list=json.loads(output_check)
+        
         if user_ID in user_list:
             return True
         else:
@@ -237,6 +268,7 @@ class Undelivered_Messages_Table:
     def add_undelivered_pair(sender_ID, receiver_ID, receiver_or_group, group_ID, text_or_image, text, image):
         lock.acquire(True)
         text=text.replace("\"","'")
+        image=image.replace("\"", "'")
         add_cmd="INSERT INTO Undelivered (SenderID, ReceiverID, Receiver_Group, GroupID, Text_Image, Text, Image) VALUES (\""
         add_cmd+=str(sender_ID)+"\", \""
         add_cmd+=str(receiver_ID)+"\", \""

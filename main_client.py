@@ -134,7 +134,7 @@ while True:
                     correct_admin=FUNCTIONS.check_admin(Group_input, ID_input)
                     if not correct_admin:
                         group_ID_exists=False
-                
+
                 while True:
                     print("\nAs the admin of group "+str(Group_input)+", please choose the action you want to perform:")
                     print(DASHED_LINE)
@@ -162,8 +162,10 @@ while True:
                             user_id_valid=FUNCTIONS.check_user_exists(user_id_added)
                             if not user_id_valid:
                                 print("\nUser ID doesn't exist! Try again. Enter 0 to go back.\n")
-                        FUNCTIONS.add_member(Group_input, user_id_added)
-                        print("User added")
+                        
+                        if user_id_added!="0":
+                            FUNCTIONS.add_member(Group_input, user_id_added)
+                            print("User added")
                     elif admin_choice=="2":
                         user_id_valid=False
                         while not user_id_valid:
@@ -176,8 +178,9 @@ while True:
                             user_id_valid=FUNCTIONS.check_user_exists(user_id_removed)
                             if not user_id_valid:
                                 print("\nUser ID doesn't exist! Try again. Enter 0 to go back.\n")
-                        FUNCTIONS.remove_member(Group_input, user_id_removed)
-                        print("User removed")
+                        if user_id_removed!="0":
+                            FUNCTIONS.remove_member(Group_input, user_id_removed)
+                            print("User removed")
 
             elif login_choice=="4":
                 group_exists=False
@@ -214,20 +217,13 @@ while True:
                     print("Enter your message:")
                     cur_message=input()
                     print(DASHED_LINE)
-                    print("Enter the group ID of the group:")
-                    cur_group=input()
-                    print(DASHED_LINE)
-                    FUNCTIONS.send_group_text(ID_input, cur_group, cur_message)
+                    FUNCTIONS.send_group_text(ID_input, Group_input, cur_message)
                     print("Message sent!")
                 elif message_choice=="2":
                     print(DASHED_LINE)
                     print("Enter your image directory:")
                     cur_image=input()
                     print(DASHED_LINE)
-                    print("Enter the User ID of the receiver:")
-                    cur_group=input()
-                    print(DASHED_LINE)
-                    FUNCTIONS.send_group_image(ID_input, cur_group, cur_image)
+                    FUNCTIONS.send_group_image(ID_input, Group_input, cur_image)
                     print("Message sent!")
-
 

@@ -5,13 +5,14 @@ import time
 
 
 address="0.0.0.0"
-port=8081
+ports=[8080,8081,8082,8083,8084]
+port=random.choice(ports)
 
 dummy_client=client("0000000"+str(random.randint(0, 1000)))
 dummy_client.CLIENT(address, port)
 
 user_client=None
-
+print("port: ",port)
 
 class FUNCTIONS:
 
@@ -60,13 +61,13 @@ class FUNCTIONS:
         
         is_received=received_from_server["Check User Password Return"]
         received_from_server["Check User Password Return"]=None
-        message={
-            "type": "Set User Offline",
-            "user_ID": str(user_ID)
-        }
-        message_json=json.dumps(message)
-        dummy_client.SEND(message_json)
-        dummy_client.CLOSE()
+        # message={
+        #     "type": "Set User Offline",
+        #     "user_ID": str(user_ID)
+        # }
+        # message_json=json.dumps(message)
+        # dummy_client.SEND(message_json)
+        # dummy_client.CLOSE()
 
         if is_received=="True":
             return True
@@ -182,6 +183,7 @@ class FUNCTIONS:
     
 
     def send_text(sender_ID, receiver_ID, text_message):
+        text_message=text_message.replace("'","")
         message={
             "type": "Send Text",
             "sender_ID": str(sender_ID),
@@ -193,6 +195,7 @@ class FUNCTIONS:
     
 
     def send_image(sender_ID, receiver_ID, image):
+        image=image.replace("'","")
         message={
             "type": "Send Image",
             "sender_ID": str(sender_ID),
@@ -225,7 +228,7 @@ class FUNCTIONS:
 
     def remove_member(group_ID, user_ID):
         message={
-            "type": "Remove Member from Group",
+            "type": "Remove Member From Group",
             "group_ID": str(group_ID),
             "user_ID": str(user_ID)
         }
@@ -234,6 +237,7 @@ class FUNCTIONS:
     
 
     def send_group_text(sender_ID, group_ID, text_message):
+        text_message=text_message.replace("'","")
         message={
             "type": "Send Group Text",
             "group_ID": str(group_ID),
@@ -245,6 +249,7 @@ class FUNCTIONS:
     
 
     def send_group_image(sender_ID, group_ID, image):
+        image=image.replace("'","")
         message={
             "type": "Send Group Image",
             "group_ID": str(group_ID),
