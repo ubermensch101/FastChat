@@ -116,7 +116,6 @@ class MAIN():
                     with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+"_"+str(random.randint(0, 1000))+".png", "wb+") as f:
                         image.save(f)
                     #image.save("images/"+received_message["sender_ID"]+".png")
-                    image.show()
 
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print(DASHED_LINE)
@@ -144,7 +143,6 @@ class MAIN():
                     image=Image.open(io.BytesIO(image_bytes))
                     with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+"_"+str(random.randint(0,1000))+".png", "wb+") as f:
                         image.save(f)
-                    image.show()
 
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print("\033[91mGroup ID:\033[0m "+received_message["group_ID"])

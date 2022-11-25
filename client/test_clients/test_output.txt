@@ -1,0 +1,627 @@
+Hello! Welcome to FastChat! We emulate a service that was used in the 1980s, probably. Enjoy!
+[91m--------------------[0m
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+You will now need to type in a User ID, which will be displayed to everyone you chat with.
+You will also need it to log in again.
+
+Enter a unique User ID:
+[91m--------------------[0m
+Enter a password:
+[91m--------------------[0m
+
+User Created! Please log in through your recently created log-in credentials now.
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your User ID
+[91m--------------------[0m
+Enter your password:
+[91m--------------------[0m
+You are now logged in! Congratulations! Really, from the bottom of our hearts. You made it to this point.
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your message:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your message:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your message:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your message:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your image directory:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your image directory:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+0: Back
+1: Send a text
+2: Send an image
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your image directory:
+[91m--------------------[0m
+Enter the User ID of the receiver:
+[91m--------------------[0m
+Message sent!
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+Thanks for visiting!
+
+Message Received!
+[91m--------------------[0m
+Hi 1
+[91mReceived from:[0m 1
+[91m--------------------[0m
+
+
+Please choose the action you want to perform:
+[91m--------------------[0m
+0: Exit
+1: Sign Up
+2: Log In
+[91m--------------------[0m
+[91m--------------------[0m
+Enter your User ID
+[91m--------------------[0m
+Enter your password:
+[91m--------------------[0m
+You are now logged in! Congratulations! Really, from the bottom of our hearts. You made it to this point.
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+Enter a unique Group ID:
+[91m--------------------[0m
+Group created. You are the admin of this group.
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Please choose the action you want to perform:
+
+[91m--------------------[0m
+0: Log Out
+1: Send a message to a fellow user
+2: Create a group
+3: Log in to a group as an admin
+4: Send a message to a group
+[91m--------------------[0m
+[91m--------------------[0m
+Enter the group ID:
+[91m--------------------[0m
+
+Group ID doesn't exist! Try again. Enter 0 to go back.
+
+[91m--------------------[0m
+Enter the group ID:

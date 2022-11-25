@@ -160,6 +160,8 @@ class FUNCTIONS:
     
     def set_user_online(user_ID):
         global user_client
+
+        port=random.choice(ports)
         
         user_client=client(user_ID)
         user_client.CLIENT(address, port)
