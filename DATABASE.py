@@ -225,12 +225,15 @@ class Group_Table:
         lock.acquire(True)
         check_cmd="SELECT UserIDList FROM Groups WHERE GroupID = \""+str(group_ID)+"\";"
         cursor.execute(check_cmd)
-        output_check=cursor.fetchall()[0][0]
+        output_check=cursor.fetchall()
         lock.release()
+        if len(output_check) > 0:
+            output_check=output_check[0][0]
+            output_check=output_check.replace("'", "\"")
+            user_list=json.loads(output_check)
+        else:
+            user_list=[]
 
-        output_check=output_check.replace("'", "\"")
-        user_list=json.loads(output_check)
-        
         if user_ID in user_list:
             return True
         else:
@@ -341,9 +344,14 @@ class Undelivered_Messages_Table:
 
         cursor.execute(user_list_cmd)
 
-        output_user_list_json=cursor.fetchall()[0][0]
-        output_user_list_json=output_user_list_json.replace("'", "\"")
-        output_user_list=json.loads(output_user_list_json)
+        k=cursor.fetchall()
+        print(k)
+        if len(k)>0:
+            output_user_list_json=k[0][0]
+            output_user_list_json=output_user_list_json.replace("'", "\"")
+            output_user_list=json.loads(output_user_list_json)
+        else:
+            output_user_list=[]
 
         lock.release()
 

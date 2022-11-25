@@ -2,6 +2,7 @@ import random
 from client_class import client, received_from_server
 import json
 import time
+from cryptography.fernet import Fernet
 
 
 address="0.0.0.0"
@@ -10,6 +11,9 @@ port=random.choice(ports)
 
 dummy_client=client("0000000"+str(random.randint(0, 1000)))
 dummy_client.CLIENT(address, port)
+
+key=b'4hJZ3LWZeyOsXWWMCn7BUnUXfMPYSSyIj-Z120Pl-54='
+F_encrypt=Fernet(key)
 
 user_client=None
 print("port:",port)
@@ -36,7 +40,6 @@ class FUNCTIONS:
         # print("recvd")
         is_received=received_from_server["Check User Exists Return"]
         received_from_server["Check User Exists Return"]=None
-        
 
         if is_received=="True":
             return True
@@ -183,24 +186,32 @@ class FUNCTIONS:
     
 
     def send_text(sender_ID, receiver_ID, text_message):
-        text_message=text_message.replace("'","")
+        # text_message=text_message.replace("'","")
+        token_text=F_encrypt.encrypt(bytes(text_message, "utf-8")).decode("utf-8")
+        print("token_text:",token_text)
+        # token_text=token_text.replace("'",".")
+
         message={
             "type": "Send Text",
             "sender_ID": str(sender_ID),
             "receiver_ID": str(receiver_ID),
-            "text_message": str(text_message)
+            "text_message": str(token_text)
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)
     
 
     def send_image(sender_ID, receiver_ID, image):
-        image=image.replace("'","")
+        image_byte=open(image,"rb").read()
+        token_image=F_encrypt.encrypt(image_byte)
+        token_image=token_image.decode("utf-8")
+        print("Length of token image:", len(token_image))
+        print(token_image[:100])
         message={
             "type": "Send Image",
             "sender_ID": str(sender_ID),
             "receiver_ID": str(receiver_ID),
-            "image": str(image)
+            "image": str(token_image)
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)
@@ -237,24 +248,30 @@ class FUNCTIONS:
     
 
     def send_group_text(sender_ID, group_ID, text_message):
-        text_message=text_message.replace("'","")
+        # text_message=text_message.replace("'","")
+        token_text=F_encrypt.encrypt(bytes(text_message, "utf-8")).decode("utf-8")
+        print("token_text:",token_text)
         message={
             "type": "Send Group Text",
             "group_ID": str(group_ID),
             "sender_ID": str(sender_ID),
-            "text_message": str(text_message)
+            "text_message": str(token_text)
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)
     
 
     def send_group_image(sender_ID, group_ID, image):
-        image=image.replace("'","")
+        image_byte=open(image,"rb").read()
+        token_image=F_encrypt.encrypt(image_byte)
+        token_image=token_image.decode("utf-8")
+        print("Length of token image:", len(token_image))
+        print(token_image[:100])
         message={
             "type": "Send Group Image",
             "group_ID": str(group_ID),
             "sender_ID": str(sender_ID),
-            "image": str(image)
+            "image": str(token_image)
         }
         message_json=json.dumps(message)
         user_client.SEND(message_json)

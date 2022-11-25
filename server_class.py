@@ -161,7 +161,28 @@ class MAIN():
                         try:
                             recv_len = data_recv_len.pop(INDEX)[1]
                             if r in self.__INPUTS:
-                                data = r.recv(recv_len)
+                                bytes_received=0
+                                packet_list=[]
+                                while bytes_received<recv_len:
+                                    if recv_len-bytes_received>65536:
+                                        packet=r.recv(65536)
+                                        bytes_received+=65536
+                                    else:
+                                        packet=r.recv(recv_len-bytes_received)
+                                        bytes_received=recv_len
+                                    packet_list.append(packet)
+                                data=b"".join(packet_list)
+                                    
+                                # if recv_len > 4096:
+                                #     d = []
+                                #     while True:
+                                #         packet = r.recv(4096)
+                                #         if not packet: break
+                                #         d.append(packet)
+                                #     data = b"".join(d)
+                                # else:
+                                # data = r.recv(recv_len)
+                                print("len(data):",len(data))
                             data = pickle.loads(base64.b64decode(data))
                             
                             if self.__MESSAGE_QUEUES[r] == "no_data":

@@ -4,6 +4,13 @@ import pickle
 import threading
 import json
 import time
+from cryptography.fernet import Fernet
+from PIL import Image
+import io
+import random
+
+key=b'4hJZ3LWZeyOsXWWMCn7BUnUXfMPYSSyIj-Z120Pl-54='
+F_encrypt=Fernet(key)
 
 received_from_server={
     "Check User Exists Return": None,
@@ -55,7 +62,19 @@ class MAIN():
                     self.sock.close()
                     raise ConnectionError("[SERVER GOES DOWN - CONNECTION LOST]")
 
-                recv_data = self.sock.recv(data_len)
+                # recv_data = self.sock.recv(data_len)
+                bytes_received=0
+                packet_list=[]
+                while bytes_received<data_len:
+                    if data_len-bytes_received>65536:
+                        packet=self.sock.recv(65536)
+                        bytes_received+=65536
+                    else:
+                        packet=self.sock.recv(data_len-bytes_received)
+                        bytes_received=data_len
+                    packet_list.append(packet)
+
+                recv_data=b"".join(packet_list)
                 recv_data = pickle.loads(base64.b64decode(recv_data))
                 print("recv_data: ",recv_data)
                 received_message=json.loads(recv_data["data"])
@@ -80,7 +99,11 @@ class MAIN():
                 elif received_message["type"]=="Send Text":
                     print("\nMessage Received!")
                     print(DASHED_LINE)
-                    print(received_message["text_message"])
+
+                    text_message_bytes=bytes(received_message["text_message"], "utf-8")
+                    text_message=F_encrypt.decrypt(text_message_bytes).decode("utf-8")
+
+                    print(text_message)
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print(DASHED_LINE)
                     print("")
@@ -88,7 +111,15 @@ class MAIN():
                 elif received_message["type"]=="Send Image":
                     print("\nMessage Received!")
                     print(DASHED_LINE)
-                    print(received_message["image"])
+
+                    image_bytes=bytes(received_message["image"], "utf-8")
+                    image_bytes=F_encrypt.decrypt(image_bytes)
+                    image=Image.open(io.BytesIO(image_bytes))
+                    with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+str(random.randint())+".png", "wb+") as f:
+                        image.save(f)
+                    #image.save("images/"+received_message["sender_ID"]+".png")
+                    image.show()
+
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print(DASHED_LINE)
                     print("")
@@ -96,7 +127,11 @@ class MAIN():
                 elif received_message["type"]=="Send Group Text":
                     print("\nMessage Received From Group!")
                     print(DASHED_LINE)
-                    print(received_message["text_message"])
+
+                    text_message_bytes=bytes(received_message["text_message"], "utf-8")
+                    text_message=F_encrypt.decrypt(text_message_bytes).decode("utf-8")
+
+                    print(text_message)
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print("\033[91mGroup ID:\033[0m "+received_message["group_ID"])
                     print(DASHED_LINE)
@@ -105,7 +140,15 @@ class MAIN():
                 elif received_message["type"]=="Send Group Image":
                     print("\nMessage Received From Group!")
                     print(DASHED_LINE)
-                    print(received_message["image"])
+
+                    image_bytes=bytes(received_message["image"], "utf-8")
+                    image_bytes=F_encrypt.decrypt(image_bytes)
+                    image=Image.open(io.BytesIO(image_bytes))
+                    with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+str(random.randint(0,1000))+".png", "wb+") as f:
+                        image.save(f)
+                    image.show()
+
+                    # print(image)
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print("\033[91mGroup ID:\033[0m "+received_message["group_ID"])
                     print(DASHED_LINE)
@@ -121,7 +164,7 @@ class MAIN():
         while not z:
             for i,s in enumerate(sender_queue):
                 
-                print("msg2:",s)
+                # print("msg2:",s)
                 prepare_for_send = base64.b64encode(pickle.dumps(s))
 
                 send_length=str(len(prepare_for_send))
