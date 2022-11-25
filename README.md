@@ -15,9 +15,10 @@ To test-run the code, follow these steps:
 
 1. From the "fastchat" directory, locate to the database directory using "cd database" and initialise the database by running the command "python3 initialise_database.py".
 2. Go back to the "fastchat" directory, and run the commands "cd server", "chmod u+x run_servers.sh" and "./run_servers.sh" to boot up the servers (5 in total).
-3. Now go to the clients folder, and run as many clients as needed by typing in "python3 main_clients.py" into as many different terminals.
-4. Follow the instructions displayed on the terminal to sign up/log in and send/receive messages from other clients.
-5. Finally, to shut everything down, run "chmod u+x kill_servers.sh" followed by "./kill_servers.sh" to kill the servers and close the client terminals.
+3. Now go to the "clients" folder using "cd clients" from the "fastchat" directory, and type in the commands "chmod u+x run_clients.sh" and "./run_clients.sh" to test run the clients. Alternatively, you can run as many clients as needed by typing in "python3 main_clients.py" into as many different terminals from the "clients" directory.
+4. If you use the bash file for testing, look at clients/test_clients/test_output.txt (relative to the "fastchat" folder) for the redirected output from running main_client.py. Otherwise, follow the instructions displayed on the terminal to sign up/log in and send/receive messages from other clients.
+5. To look at the images sent, check out the clients/images directory. The images are formatted as "senderID_receiverID_randint.png".
+6. Finally, to shut everything down, run "chmod u+x kill_servers.sh" followed by "./kill_servers.sh" to kill the servers, and then close the bash/client terminals.
 
 The process flow:
 
@@ -35,8 +36,19 @@ The process flow:
 
 Schema of Database:
 
-        TABLE NAME: Undelivered
+        TABLE NAME: Users
+        FIELD NAME   FIELD TYPE
+        UserID          TEXT (PRIMARY KEY)
+        Password        TEXT
+        Online          INT
         
+        TABLE NAME: Groups
+        FIELD NAME   FIELD TYPE 
+        GroupID         TEXT (PRIMARY KEY)
+        AdminID         TEXT (FOREIGN KEY from Users.UserID)
+        UserIDList      TEXT
+
+        TABLE NAME: Undelivered
         FIELD NAME    FIELD TYPE
         SenderID        TEXT (FOREIGN KEY from Users.UserID)
         ReceiverID      TEXT (FOREIGN KEY from Users.UserID)
@@ -48,16 +60,8 @@ Schema of Database:
         UnsentIDList    TEXT
         
         
-        TABLE NAME: Groups
-        FIELD NAME   FIELD TYPE 
-        GroupID         TEXT (PRIMARY KEY)
-        AdminID         TEXT (FOREIGN KEY from Users.UserID
-        UserIDList      TEXT
         
         
-        TABLE NAME: Users
-        FIELD NAME   FIELD TYPE
-        UserID          TEXT (PRIMARY KEY)
-        Password        TEXT
-        Online          INT
+        
+        
   
