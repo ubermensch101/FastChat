@@ -16,7 +16,6 @@ key=b'4hJZ3LWZeyOsXWWMCn7BUnUXfMPYSSyIj-Z120Pl-54='
 F_encrypt=Fernet(key)
 
 user_client=None
-print("port:",port)
 
 class FUNCTIONS:
 
@@ -27,9 +26,7 @@ class FUNCTIONS:
             "user_ID": str(user_ID)
         }
         message_json=json.dumps(message)
-        # print("0")
         dummy_client.SEND(message_json)
-        # print("sent")
         counter=0
         while received_from_server["Check User Exists Return"] is None:
             time.sleep(0.1)
@@ -37,7 +34,6 @@ class FUNCTIONS:
             if counter>100:
                 break
         
-        # print("recvd")
         is_received=received_from_server["Check User Exists Return"]
         received_from_server["Check User Exists Return"]=None
 
@@ -186,10 +182,7 @@ class FUNCTIONS:
     
 
     def send_text(sender_ID, receiver_ID, text_message):
-        # text_message=text_message.replace("'","")
         token_text=F_encrypt.encrypt(bytes(text_message, "utf-8")).decode("utf-8")
-        print("token_text:",token_text)
-        # token_text=token_text.replace("'",".")
 
         message={
             "type": "Send Text",
@@ -205,8 +198,6 @@ class FUNCTIONS:
         image_byte=open(image,"rb").read()
         token_image=F_encrypt.encrypt(image_byte)
         token_image=token_image.decode("utf-8")
-        print("Length of token image:", len(token_image))
-        print(token_image[:100])
         message={
             "type": "Send Image",
             "sender_ID": str(sender_ID),
@@ -248,9 +239,7 @@ class FUNCTIONS:
     
 
     def send_group_text(sender_ID, group_ID, text_message):
-        # text_message=text_message.replace("'","")
         token_text=F_encrypt.encrypt(bytes(text_message, "utf-8")).decode("utf-8")
-        print("token_text:",token_text)
         message={
             "type": "Send Group Text",
             "group_ID": str(group_ID),
@@ -265,8 +254,6 @@ class FUNCTIONS:
         image_byte=open(image,"rb").read()
         token_image=F_encrypt.encrypt(image_byte)
         token_image=token_image.decode("utf-8")
-        print("Length of token image:", len(token_image))
-        print(token_image[:100])
         message={
             "type": "Send Group Image",
             "group_ID": str(group_ID),

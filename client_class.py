@@ -76,11 +76,9 @@ class MAIN():
 
                 recv_data=b"".join(packet_list)
                 recv_data = pickle.loads(base64.b64decode(recv_data))
-                print("recv_data: ",recv_data)
                 received_message=json.loads(recv_data["data"])
                 if received_message["type"]=="Set User Offline Return":
                     x=True
-                    print("yes")
                 elif received_message["type"]=="Check User Exists Return":
                     received_from_server["Check User Exists Return"]=received_message["user_exists"]
                 
@@ -148,7 +146,6 @@ class MAIN():
                         image.save(f)
                     image.show()
 
-                    # print(image)
                     print("\033[91mReceived from:\033[0m "+received_message["sender_ID"])
                     print("\033[91mGroup ID:\033[0m "+received_message["group_ID"])
                     print(DASHED_LINE)
@@ -156,7 +153,6 @@ class MAIN():
 
             
             self.done=True
-            print("exited1")
                     
     def __sender(self,sock,sender_queue):
 
@@ -164,7 +160,6 @@ class MAIN():
         while not z:
             for i,s in enumerate(sender_queue):
                 
-                # print("msg2:",s)
                 prepare_for_send = base64.b64encode(pickle.dumps(s))
 
                 send_length=str(len(prepare_for_send))
@@ -193,7 +188,6 @@ class MAIN():
         
         for l in lst:
             allowed_lst.append(type(l))
-        print("data: ", data)
         if type(data) in allowed_lst:
             prepare_send_data = {
                 'sender_name' : self.__client_name,
@@ -208,7 +202,6 @@ class MAIN():
         
         while(True):
             if self.done:
-                print("yeah")
                 self.sock.close()
                 break
         

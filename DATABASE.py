@@ -124,13 +124,11 @@ class Group_Table:
         output_user_list=cursor.fetchall()
         lock.release()
         if len(output_user_list)==0:
-            print("user list empty")
             return []
         else:
             user_list_json=output_user_list[0][0]
             user_list_json=user_list_json.replace("'", "\"")
             user_list=json.loads(user_list_json)
-            print("user_list: ",user_list)
             return user_list
     
     def get_user_list_database(group_ID):
@@ -138,13 +136,11 @@ class Group_Table:
         cursor.execute(user_list_cmd)
         output_user_list=cursor.fetchall()
         if len(output_user_list)==0:
-            print("user list empty")
             return []
         else:
             user_list_json=output_user_list[0][0]
             user_list_json=user_list_json.replace("'", "\"")
             user_list=json.loads(user_list_json)
-            print("user_list: ",user_list)
             return user_list
 
     def create_group(group_ID, admin_ID):
@@ -155,7 +151,6 @@ class Group_Table:
         create_cmd+=str(group_ID)
         create_cmd+="\", \""+str(admin_ID)
         create_cmd+="\", \""+str(user_list_json)+"\");"
-        print(create_cmd)
 
         cursor.execute(create_cmd)
         conn.commit()
@@ -168,7 +163,6 @@ class Group_Table:
         
         if user_ID not in user_list:
             user_list.append(user_ID)
-        print(user_list)
         user_list_json=json.dumps(user_list)
         user_list_json=user_list_json.replace("\"","'")
         user_list_cmd="UPDATE Groups "
@@ -194,10 +188,8 @@ class Group_Table:
             return
         
         user_list=Group_Table.get_user_list_database(group_ID)
-        print("before",user_list)
         if user_ID in user_list:
             user_list.remove(user_ID)
-        print("after",user_list)
         user_list_json=json.dumps(user_list)
         user_list_json=user_list_json.replace("\"","'")
         user_list_cmd="UPDATE Groups "
@@ -287,7 +279,6 @@ class Undelivered_Messages_Table:
         add_cmd+=str(image)+"\", \""
         add_cmd+=str(unsent_id_list)+"\");"
 
-        # print(add_cmd)
 
         cursor.execute(add_cmd)
         conn.commit()
@@ -303,11 +294,9 @@ class Undelivered_Messages_Table:
         delete_cmd+="\" AND Image = \""+str(image)
         delete_cmd+="\";"
 
-        print("removed from table in up1")
         cursor.execute(delete_cmd)
         conn.commit()
         lock.release()
-        print("removed from table in up2")
         return
     
     def remove_undelivered_pair_from_database(sender_ID, receiver_ID, text, image):
@@ -320,7 +309,6 @@ class Undelivered_Messages_Table:
 
         cursor.execute(delete_cmd)
         conn.commit()
-        print("removed from table")
         return
 
     def retrieve_receiver_messages(receiver_ID):
@@ -345,7 +333,6 @@ class Undelivered_Messages_Table:
         cursor.execute(user_list_cmd)
 
         k=cursor.fetchall()
-        print(k)
         if len(k)>0:
             output_user_list_json=k[0][0]
             output_user_list_json=output_user_list_json.replace("'", "\"")
@@ -369,13 +356,11 @@ class Undelivered_Messages_Table:
         cursor.execute(user_list_cmd)
         output_user_list=cursor.fetchall()[0][0]
 
-        print("before_r_u_l:",output_user_list)
         output_user_list=output_user_list.replace("'","\"")
         output_user_list=json.loads(output_user_list)
 
         if removing_ID in output_user_list:
             output_user_list.remove(removing_ID)
-        print("output_u_list:",output_user_list)
 
         if len(output_user_list) > 0 :
             user_list_json=json.dumps(output_user_list)
@@ -388,6 +373,5 @@ class Undelivered_Messages_Table:
             conn.commit()
         else:
             Undelivered_Messages_Table.remove_undelivered_pair_from_database(sender_ID,receiver_ID,text,image)
-            print("undelivered msg removed")
         lock.release()
         return
