@@ -28,5 +28,36 @@ The process flow:
 - Acquired and released locks for server interactions with database, to ensure two separate threads don't try to access the database at the same time.
 - Added functionality for signing up, logging in, sending texts, sending text-like images, creating groups, adding members to groups, removing members from group, sending texts to groups and sending text-like images to groups.
 - Formatted messages into dictionaries, handling these messages further dependent on message types, and transferring them after converting them to JSON format and encoding them via pickle.
+- Encrypted the text message/image bytes using the library cryptograpy with a pre-generated key, decrypting it upon arrival to intended client
+- Added randomised load-balancing to prevent too much stress on any one server
 - Created a list of online users on server side, devoting a thread to loop through undelivered messages and send them to users when they come online.
 - Created a terminal-based front end that interfaces between the user and the client class. It's got red dashed lines.
+
+Schema of Database:
+
+        TABLE NAME: Undelivered
+        
+        FIELD NAME    FIELD TYPE
+        SenderID        TEXT (FOREIGN KEY from Users.UserID)
+        ReceiverID      TEXT (FOREIGN KEY from Users.UserID)
+        Receiver_Group  TEXT 
+        GroupID         TEXT (FOREIGN KEY from Groups.GroupID)
+        Text_Image      TEXT
+        Text            TEXT
+        Image           TEXT
+        UnsentIDList    TEXT
+        
+        
+        TABLE NAME: Groups
+        FIELD NAME   FIELD TYPE 
+        GroupID         TEXT (PRIMARY KEY)
+        AdminID         TEXT (FOREIGN KEY from Users.UserID
+        UserIDList      TEXT
+        
+        
+        TABLE NAME: Users
+        FIELD NAME   FIELD TYPE
+        UserID          TEXT (PRIMARY KEY)
+        Password        TEXT
+        Online          INT
+  
