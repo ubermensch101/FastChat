@@ -1,6 +1,5 @@
 from FUNCTIONS import FUNCTIONS
 
-
 DASHED_LINE="\033[91m"+"--------------------"+"\033[0m"
 
 print("Hello! Welcome to FastChat! We emulate a service that was used in the 1980s, probably. Enjoy!")
@@ -174,6 +173,7 @@ while True:
                         user_id_valid=False
                         while not user_id_valid:
                             print(DASHED_LINE)
+                            print("(Note that admins cannot be removed from the group)")
                             print("Enter User ID:")
                             user_id_removed=input()
                             print(DASHED_LINE)
@@ -184,7 +184,7 @@ while True:
                                 print("\nUser ID doesn't exist! Try again. Enter 0 to go back.\n")
                         if user_id_removed!="0":
                             FUNCTIONS.remove_member(Group_input, user_id_removed)
-                            print("User removed")
+                            print("User is no longer in the group.")
 
             elif login_choice=="4":
                 group_exists=False
@@ -230,4 +230,6 @@ while True:
                     print(DASHED_LINE)
                     FUNCTIONS.send_group_image(ID_input, Group_input, cur_image)
                     print("Message sent!")
+
+quit()
 

@@ -4,14 +4,12 @@ import threading
 
 global lock
 
-conn=sqlite3.connect("user_data.db",check_same_thread=False)
+conn=sqlite3.connect("../database/user_data.db",check_same_thread=False)
 cursor=conn.cursor()
 lock = threading.Lock()
 
 
 class User_Table:
-
-    # For speed, reduce commits and use lock
 
     # 0 - Offline, 1 - Online
     def create_users_table():
@@ -185,6 +183,7 @@ class Group_Table:
         output_check=cursor.fetchall()
 
         if len(output_check)>0:
+            lock.release()
             return
         
         user_list=Group_Table.get_user_list_database(group_ID)

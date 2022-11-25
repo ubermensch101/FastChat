@@ -113,7 +113,7 @@ class MAIN():
                     image_bytes=bytes(received_message["image"], "utf-8")
                     image_bytes=F_encrypt.decrypt(image_bytes)
                     image=Image.open(io.BytesIO(image_bytes))
-                    with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+str(random.randint())+".png", "wb+") as f:
+                    with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+"_"+str(random.randint(0, 1000))+".png", "wb+") as f:
                         image.save(f)
                     #image.save("images/"+received_message["sender_ID"]+".png")
                     image.show()
@@ -142,7 +142,7 @@ class MAIN():
                     image_bytes=bytes(received_message["image"], "utf-8")
                     image_bytes=F_encrypt.decrypt(image_bytes)
                     image=Image.open(io.BytesIO(image_bytes))
-                    with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+str(random.randint(0,1000))+".png", "wb+") as f:
+                    with open("images/"+received_message["sender_ID"]+"_"+self.__client_name+"_"+str(random.randint(0,1000))+".png", "wb+") as f:
                         image.save(f)
                     image.show()
 

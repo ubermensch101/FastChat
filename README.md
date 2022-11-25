@@ -1,29 +1,32 @@
-The Technology and The Functionality:
+FastChat is an easy-to-use terminal-based message service that allows you to exchange text messages between fellow users, create groups, add and remove members from groups as an admin, and share images with friends. Messages you type up are end-to-end encrypted, and hence your communication is always secure.
 
--Created a database shared with all servers, composed of User, Group and Undelivered Messages tables.
--Abstracted each table as an object, with many member functions to obtain data in specified formats.
--Created a server class that serves an interface between the client and the database.
--Used multi-threading to run loops for sending, receiving and database handling, using class attributes to interface between the threads via lists and queues.
--Acquired and released locks for server interactions with database, to ensure two separate threads don't try to access the database at the same time.
--Added functionality for signing up, logging in, sending texts, sending text-like images, creating groups, adding members to groups, removing members from group, sending texts to groups and sending text-like images to groups.
--Formatted messages into dictionaries, handling these messages further dependent on message types, and transferring them after converting them to JSON format and encoding them via pickle.
--Created a list of online users on server side, devoting a thread to loop through undelivered messages and send them to users when they come online.
--Created a terminal-based front end that interacts with the client class appropriately.
+The features included are:
 
-How to run it:
+- Sending a text to a friend
+- Sending an image to a friend
+- Creating a group
+- Logging in to a group as an admin
+- Adding members to a group as an admin
+- Removing members of a group as an admin
+- Send a text to a group
+- Sending an image to a group
 
--Run main_server.py to boot up the server
--Create clients by running main.py from as many terminals as we need clients.
--Follow front-end as a client to sign up, log in, send texts, create groups and so on.
+To test-run the code, follow these steps:
 
-Yet to be done:
+1. From the "fastchat" directory, locate to the database directory using "cd database" and initialise the database by running the command "python3 initialise_database.py".
+2. Go back to the "fastchat" directory, and run the commands "cd server", "chmod u+x run_servers.sh" and "./run_servers.sh" to boot up the servers (5 in total).
+3. Now go to the clients folder, and run as many clients as needed by typing in "python3 main_clients.py" into as many different terminals.
+4. Follow the instructions displayed on the terminal to sign up/log in and send/receive messages from other clients.
+5. Finally, to shut everything down, run "chmod u+x kill_servers.sh" followed by "./kill_servers.sh" to kill the servers and close the client terminals.
 
--Encryption
--Handling images
--Load balancing techniques
+The process flow:
 
-Team member's contributions:
-
-Aaryan- Database, Client class, Debugging
-Hruday- Server class, Multi-threading, Debugging
-Kesava- Front-end, Encryption, Debugging
+- Created a database shared by all servers, composed of the tables User, Group and Undelivered Messages.
+- Abstracted each table as an object, with member functions to obtain data in specific formats.
+- Created a server class that serves an interface between the client and the database.
+- Used multi-threading to run loops for sending, receiving and database handling, using class attributes to interface between the threads via lists and queues.
+- Acquired and released locks for server interactions with database, to ensure two separate threads don't try to access the database at the same time.
+- Added functionality for signing up, logging in, sending texts, sending text-like images, creating groups, adding members to groups, removing members from group, sending texts to groups and sending text-like images to groups.
+- Formatted messages into dictionaries, handling these messages further dependent on message types, and transferring them after converting them to JSON format and encoding them via pickle.
+- Created a list of online users on server side, devoting a thread to loop through undelivered messages and send them to users when they come online.
+- Created a terminal-based front end that interfaces between the user and the client class. It's got red dashed lines.
